@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 10
+
+int main() {
+    int n;
+    int keys[MAX], freq[MAX];
+    int cost[MAX][MAX];
+
+    cout << "Enter number of keys: ";
+    cin >> n;
+
+    cout << "Enter keys:\n";
+    for (int i = 0; i < n; i++)
+        cin >> keys[i];
+
+    cout << "Enter frequencies:\n";
+    for (int i = 0; i < n; i++)
+        cin >> freq[i];
+
+    // Initialize cost
+    for (int i = 0; i < n; i++)
+        cost[i][i] = freq[i];
+
+    // OBST cost calculation
+    for (int L = 2; L <= n; L++) {
+        for (int i = 0; i <= n - L; i++) {
+            int j = i + L - 1;
+            cost[i][j] = 9999;
+
+            int sum = 0;
+            for (int k = i; k <= j; k++)
+                sum += freq[k];
+
+            for (int r = i; r <= j; r++) {
+                int c = sum;
+
+                if (r > i)
+                    c += cost[i][r - 1];
+                if (r < j)
+                    c += cost[r + 1][j];
+
+                if (c < cost[i][j])
+                    cost[i][j] = c;
+            }
+        }
+    }
+
+    cout << "Minimum cost of OBST = " << cost[0][n - 1] << endl;
+
+    // Simple search (BST style)
+    int key;
+    cout << "Enter key to search: ";
+    cin >> key;
+
+    int found = 0;
+    for (int i = 0; i < n; i++) {
+        if (keys[i] == key) {
+            cout << "Key found\n";
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        cout << "Key not found\n";
+
+    return 0;
+}
