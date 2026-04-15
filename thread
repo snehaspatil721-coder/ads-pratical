@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    bool lthread, rthread;
+};
+
+Node* create(int key) {
+    Node* temp = new Node();
+    temp->data = key;
+    temp->left = temp->right = NULL;
+    temp->lthread = temp->rthread = true;
+    return temp;
+}
+
+// Insert
+Node* insert(Node* root, int key) {
+    if (root == NULL)
+        return create(key);
+
+    Node* curr = root;
+    Node* parent = NULL;
+
+    while (curr != NULL) {
+        parent = curr;
+        if (key < curr->data) {
+            if (!curr->lthread)
+                curr = curr->left;
+            else break;
+        } else {
+            if (!curr->rthread)
+                curr = curr->right;
+            else break;
+        }
+    }
+
+    Node* temp = create(key);
+
+    if (key < parent->data) {
+        temp->left = parent->left;
+        temp->right = parent;
+        parent->lthread = false;
+        parent->left = temp;
+    } else {
+        temp->left = parent;
+        temp->right = parent->right;
+        parent->rthread = false;
+        parent->right = temp;
+    }
+
+    return root;
+}
+
+// Inorder traversal
+void inorder(Node* root) {
+    Node* curr = root;
+
+    while (curr && !curr->lthread)
+        curr = curr->left;
+
+    while (curr != NULL) {
+        cout << curr->data << " ";
+
+        if (curr->rthread)
+            curr = curr->right;
+        else {
+            curr = curr->right;
+            while (curr && !curr->lthread)
+                curr = curr->left;
+        }
+    }
+}
+
+// Search
+void search(Node* root, int key) {
+    Node* curr = root;
+
+    while (curr != NULL) {
+        if (curr->data == key) {
+            cout << "Found\n";
+            return;
+        }
+
+        if (key < curr->data) {
+            if (!curr->lthread)
+                curr = curr->left;
+            else break;
+        } else {
+            if (!curr->rthread)
+                curr = curr->right;
+            else break;
+        }
+    }
+
+    cout << "Not Found\n";
+}
+
+int main() {
+    Node* root = NULL;
+
+    root = insert(root, 20);
+    root = insert(root, 10);
+    root = insert(root, 30);
+
+    cout << "Inorder: ";
+    inorder(root);
+
+    cout << "\nSearch 10: ";
+    search(root, 10);
+
+    return 0;
+}
