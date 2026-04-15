@@ -1,0 +1,98 @@
+//recursion
+#include <iostream>
+using namespace std;
+
+int adj[10][10], visited[10], n;
+
+// DFS Function
+void DFS(int node) {
+    cout << node << " ";
+    visited[node] = 1;
+
+    // visit all adjacent nodes
+    for (int i = 0; i < n; i++) {
+        if (adj[node][i] == 1 && visited[i] == 0) {
+            DFS(i);
+        }
+    }
+}
+
+// Main Function
+int main() {
+    int start;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    cout << "Enter adjacency matrix:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> adj[i][j];
+        }
+    }
+
+    cout << "Enter starting node: ";
+    cin >> start;
+
+    // initialize visited array
+    for (int i = 0; i < n; i++)
+        visited[i] = 0;
+
+    cout << "DFS Traversal: ";
+    DFS(start);
+
+    return 0;
+}
+//stack
+#include <iostream>
+using namespace std;
+
+int adj[10][10], visited[10], n;
+
+// DFS using stack
+void DFS(int start) {
+    int stack[10], top = -1;
+
+    stack[++top] = start;
+
+    while (top != -1) {
+        int node = stack[top--];  // pop
+
+        if (visited[node] == 0) {
+            cout << node << " ";
+            visited[node] = 1;
+
+            // push adjacent nodes
+            for (int i = n - 1; i >= 0; i--) {
+                if (adj[node][i] == 1 && visited[i] == 0) {
+                    stack[++top] = i;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int start;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    cout << "Enter adjacency matrix:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> adj[i][j];
+        }
+    }
+
+    cout << "Enter starting node: ";
+    cin >> start;
+
+    for (int i = 0; i < n; i++)
+        visited[i] = 0;
+
+    cout << "DFS: ";
+    DFS(start);
+
+    return 0;
+}
