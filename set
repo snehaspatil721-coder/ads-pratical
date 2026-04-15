@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int A[10], B[10], n, m;
+
+    cout << "Enter number of Spanish attendees: ";
+    cin >> n;
+
+    cout << "Enter elements of Spanish set:\n";
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+
+    cout << "Enter number of German attendees: ";
+    cin >> m;
+
+    cout << "Enter elements of German set:\n";
+    for (int i = 0; i < m; i++)
+        cin >> B[i];
+
+    // UNION
+    cout << "\nUnion: ";
+    for (int i = 0; i < n; i++)
+        cout << A[i] << " ";
+
+    for (int i = 0; i < m; i++) {
+        bool found = false;
+        for (int j = 0; j < n; j++) {
+            if (B[i] == A[j]) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            cout << B[i] << " ";
+    }
+
+    // INTERSECTION
+    cout << "\nIntersection: ";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (A[i] == B[j]) {
+                cout << A[i] << " ";
+            }
+        }
+    }
+
+    // DIFFERENCE (A - B)
+    cout << "\nDifference (Spanish - German): ";
+    for (int i = 0; i < n; i++) {
+        bool found = false;
+        for (int j = 0; j < m; j++) {
+            if (A[i] == B[j]) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            cout << A[i] << " ";
+    }
+
+    return 0;
+}
